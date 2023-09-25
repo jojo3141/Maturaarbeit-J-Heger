@@ -1,0 +1,58 @@
+import keyboard
+import time
+
+#Definitions for U/F/R/D/F/B-turns
+def U_turn(list):
+    new_positions = [list[3],list[0],list[1],list[2],
+                     list[4],list[5],list[6],list[7]]
+    return new_positions
+
+def F_turn(list):
+    new_positions = [list[4],list[1],list[2],list[0],
+                     list[7],list[5],list[6],list[3]]
+    return new_positions
+
+def R_turn(list):
+    new_positions = [list[0],list[1],list[3],list[7],
+                     list[4],list[5],list[2],list[6]]
+    return new_positions
+
+
+#Definitions of inverted turns
+def Ui_turn(list):
+    return U_turn(U_turn(U_turn(list)))
+
+
+
+original_positions = [0,1,2,3,4,5,6,7]
+current_positions = original_positions
+print(current_positions)
+
+print("5 times F U F Ui")
+for i in range(5):
+    current_positions = Ui_turn(F_turn(U_turn(F_turn(current_positions))))
+    print(current_positions)
+
+
+"""
+while True:
+    if keyboard.read_key() == "u":
+        current_positions = U_turn(current_positions)
+        print("U", current_positions)
+        time.sleep(0.2)
+
+    if keyboard.read_key() == "f":
+        current_positions = F_turn(current_positions)
+        print("F", current_positions)
+        time.sleep(0.2)
+
+    if keyboard.read_key() == "r":
+        current_positions = R_turn(current_positions)
+        print("R", current_positions)
+        time.sleep(0.2)
+
+    if keyboard.read_key() == "i":
+        current_positions = Ui_turn(current_positions)
+        print("Ui", current_positions)
+        time.sleep(0.2)
+"""

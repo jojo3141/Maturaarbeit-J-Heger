@@ -1,0 +1,105 @@
+import keyboard
+import time
+import random
+
+original_positions = [0,1,2,3,4,5,6,7]
+current_positions = original_positions
+
+#Definitions for U/F/R/L/D/B-turns
+def U_turn(list):
+    new_positions = [list[3],list[0],list[1],list[2],
+                     list[4],list[5],list[6],list[7]]
+    return new_positions
+def F_turn(list):
+    new_positions = [list[4],list[1],list[2],list[0],
+                     list[7],list[5],list[6],list[3]]
+    return new_positions
+def R_turn(list):
+    new_positions = [list[0],list[1],list[3],list[7],
+                     list[4],list[5],list[2],list[6]]
+    return new_positions
+def L_turn(list):
+    new_positions = [list[1],list[5],list[2],list[3],
+                     list[0],list[4],list[6],list[7]]
+    return new_positions
+def D_turn(list):
+    new_positions = [list[0],list[1],list[2],list[3],
+                     list[5],list[6],list[7],list[4]]
+    return new_positions
+def B_turn(list):
+    new_positions = [list[0],list[2],list[6],list[3],
+                     list[4],list[1],list[5],list[7]]
+    return new_positions
+
+#Definitions of inverted turns
+def Ui_turn(list):
+    return U_turn(U_turn(U_turn(list)))
+def Fi_turn(list):
+    return F_turn(F_turn(F_turn(list)))
+def Ri_turn(list):
+    return R_turn(R_turn(R_turn(list)))
+def Li_turn(list):
+    return L_turn(L_turn(L_turn(list)))
+def Di_turn(list):
+    return D_turn(D_turn(D_turn(list)))
+def Bi_turn(list):
+    return B_turn(B_turn(B_turn(list)))
+
+normal_moves = [U_turn, F_turn, R_turn, L_turn, D_turn, B_turn]
+inverted_moves = [Ui_turn, Fi_turn, Ri_turn, Li_turn, Di_turn, Bi_turn]
+list_of_possible_moves = normal_moves + inverted_moves
+
+#Definitions to do or reverse algs
+def do_alg(current_positions, list_of_moves):
+    print("This is the starting position:", current_positions)
+    for turn in list_of_moves:
+        current_positions = turn(current_positions)
+    print("The alg is done, the position is now:", current_positions)
+    return current_positions
+def do_alg_silent(current_positions, list_of_moves):
+    for move in list_of_moves:
+        current_positions = move(current_positions)
+    return current_positions
+def reverse_alg(alg):
+    alg = list(reversed(alg))                      #read the alg backwards
+
+    for i in range(6):                             #every inverted turn gets normal and vice versa
+        for j in range(len(alg)):
+            if alg[j] == normal_moves[i]:
+                alg[j] = inverted_moves[i]
+            elif alg[j] == inverted_moves[i]:
+                alg[j] = normal_moves[i]
+    return alg
+
+
+def solve(scramble):
+    scrambled_positions = do_alg_silent(current_positions, scramble)
+    trynumber=0
+    while True:
+        trynumber+=1
+        random_move1 = random.choice(list_of_possible_moves)
+        random_move2 = random.choice(list_of_possible_moves)
+        random_move3 = random.choice(list_of_possible_moves)
+        random_move4 = random.choice(list_of_possible_moves)
+        random_move5 = random.choice(list_of_possible_moves)
+        random_move6 = random.choice(list_of_possible_moves)
+
+        #print(trynumber, "th Try with the moves:", random_move1.__name__,", ", random_move2.__name__,", ",
+        #      random_move3.__name__, ", ", random_move4.__name__, ", ", random_move5.__name__, sep="")
+
+        print(trynumber)
+        if scrambled_positions == do_alg_silent(original_positions,[random_move1, random_move2,
+                                                                    random_move3, random_move4, random_move5,
+                                                                    random_move6]):
+            print("I found the Solution:",
+                  [move.__name__ for move in reverse_alg([random_move1, random_move2, random_move3, random_move4,
+                                                          random_move5, random_move6])])
+            print("The scramble was:", [move.__name__ for move in scramble])
+
+            #string_list = [move.__name__ for move in reverse_alg([random_move1, random_move2, random_move3,
+            # random_move4, random_move5])]
+            break
+
+
+
+solve([F_turn, U_turn, D_turn, Fi_turn,Li_turn, F_turn, U_turn, B_turn, Fi_turn, U_turn])

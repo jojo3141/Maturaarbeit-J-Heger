@@ -1,0 +1,119 @@
+import keyboard
+import time
+original_positions = [0,1,2,3,4,5,6,7]
+current_positions = original_positions
+print(current_positions)
+
+#Definitions for U/F/R/D/F/B-turns
+def U_turn(list):
+    new_positions = [list[3],list[0],list[1],list[2],
+                     list[4],list[5],list[6],list[7]]
+    return new_positions
+def F_turn(list):
+    new_positions = [list[4],list[1],list[2],list[0],
+                     list[7],list[5],list[6],list[3]]
+    return new_positions
+def R_turn(list):
+    new_positions = [list[0],list[1],list[3],list[7],
+                     list[4],list[5],list[2],list[6]]
+    return new_positions
+def L_turn(list):
+    new_positions = [list[1],list[5],list[2],list[3],
+                     list[0],list[4],list[6],list[7]]
+    return new_positions
+def D_turn(list):
+    new_positions = [list[0],list[1],list[2],list[3],
+                     list[5],list[6],list[7],list[4]]
+    return new_positions
+def B_turn(list):
+    new_positions = [list[0],list[2],list[6],list[3],
+                     list[4],list[1],list[5],list[7]]
+    return new_positions
+
+#Definitions of inverted turns
+def Ui_turn(list):
+    return U_turn(U_turn(U_turn(list)))
+def Fi_turn(list):
+    return F_turn(F_turn(F_turn(list)))
+def Ri_turn(list):
+    return R_turn(R_turn(R_turn(list)))
+def Li_turn(list):
+    return L_turn(L_turn(L_turn(list)))
+def Di_turn(list):
+    return D_turn(D_turn(D_turn(list)))
+def Bi_turn(list):
+    return B_turn(B_turn(B_turn(list)))
+
+
+
+
+
+
+
+
+
+def do_alg(current_positions, list_of_turns):
+    print("This is the starting position:", current_positions)
+    for turn in list_of_turns:
+        current_positions = turn(current_positions)
+    print("The alg is done, the position is now:", current_positions)
+
+def do_alg_silent(current_positions, list_of_turns):
+    for turn in list_of_turns:
+        current_positions = turn(current_positions)
+
+
+alg1 = [U_turn, F_turn, U_turn, F_turn, U_turn, F_turn, U_turn, F_turn, U_turn, F_turn,]
+alg_sexy_move = [R_turn, U_turn, Ri_turn, Ui_turn]
+
+do_alg(current_positions, alg_sexy_move*6)
+
+scrambled_positions = do_alg_silent(current_positions, [F_turn, B_turn, U_turn, R_turn, Fi_turn])
+
+
+
+
+
+
+
+
+
+#alg(original_positions, [U_turn,F_turn,U_turn])
+
+
+"""
+print("5 times F U F Ui")
+for i in range(5):
+    current_positions = Ui_turn(F_turn(U_turn(F_turn(current_positions))))
+    print(current_positions)
+
+
+
+
+while True:
+    if keyboard.read_key() == "u":
+        current_positions = U_turn(current_positions)
+        print("U", current_positions)
+        time.sleep(0.2)
+    if keyboard.read_key() == "f":
+        current_positions = F_turn(current_positions)
+        print("F", current_positions)
+        time.sleep(0.2)
+    if keyboard.read_key() == "r":
+        current_positions = R_turn(current_positions)
+        print("R", current_positions)
+        time.sleep(0.2)
+    if keyboard.read_key() == "l":
+        current_positions = Ui_turn(current_positions)
+        print("L", current_positions)
+        time.sleep(0.2)
+    if keyboard.read_key() == "d":
+        current_positions = Ui_turn(current_positions)
+        print("D", current_positions)
+        time.sleep(0.2)
+    if keyboard.read_key() == "b":
+        current_positions = Ui_turn(current_positions)
+        print("B", current_positions)
+        time.sleep(0.2)
+
+"""
