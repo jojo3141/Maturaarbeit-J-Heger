@@ -1,9 +1,0 @@
-original_positions = range(A,a,B,b,C,c,D,d,E,e,F,f)
-
-U_turn = [A-B-C-D, R-N-J-F, Z-M-I-E, a-b-c-d, z-m-i-e]
-F_turn = [I-J-K-L, D-M-V-G, C-P-U-F, i-j-k-l, c-p-u-f]
-R_turn = [M-N-O-P, C-Z-W-K, B-T-V-J, m-n-o-p, b-t-v-j]
-
-L_turn = [E-F-G-H, A-I-U-S, D-L-X-R, e-f-g-h, d-l-x-r]
-D_turn = [U-V-W-X, L-P-T-H, K-O-S-G, u-v-w-x, k-o-s-g]
-B_turn = []

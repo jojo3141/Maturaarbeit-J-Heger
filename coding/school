@@ -1,2 +1,0 @@
-list = input()
-print(list)
