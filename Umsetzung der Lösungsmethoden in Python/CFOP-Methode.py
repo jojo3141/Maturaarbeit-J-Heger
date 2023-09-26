@@ -1,9 +1,8 @@
-from class_Cubie import *
+from Rubiks_Cube import *
 
 def solveCFOPcross(scr):
     cross_solution = []
     cube1.reset()
-    print("scramble:", (scr))
     cube1.doalg(scr + cross_solution)
     white_edges_positions = list(white_side & edges_set)
 
@@ -99,21 +98,6 @@ def solveCFOPF2L(scr):
 
     not_solved_pairs = [pair1, pair2, pair3, pair4]
     not_solved_pairs = [pair for pair in not_solved_pairs if not all(cube1.is_position_solved(elem) for elem in pair)]
-    print(not_solved_pairs)
-
-    def on_which_side(pos):
-        if pos in white_side:
-            return "w"
-        elif pos in yellow_side:
-            return "y"
-        elif pos in orange_side:
-            return "o"
-        elif pos in red_side:
-            return "r"
-        elif pos in blue_side:
-            return "b"
-        elif pos in green_side:
-            return "g"
 
     def count_solved_pairs():
         solved_pairs = 4 - len([pair for pair in [pair1, pair2, pair3, pair4] if not all(cube1.is_position_solved(elem) for elem in pair)])
@@ -276,7 +260,6 @@ def solveCFOPF2L(scr):
 
 
         F2L_solution += [" | "]
-        cube1.virtualcube()
         not_solved_pairs = [pair for pair in not_solved_pairs if not all(cube1.is_position_solved(elem) for elem in pair)]
 
     F2L_solution = [elem for elem in F2L_solution if elem != ""]
@@ -291,9 +274,7 @@ def solveCFOPOLL(scr):
     yellow_edges_count = sum(cube1.cp[elem] in yellow_edges for elem in yellow_edges)
     yellow_corner_count = sum(cube1.cp[elem] in yellow_corners for elem in yellow_corners)
     count = yellow_edges_count + yellow_corner_count + 1
-    if count == 9:
-        print("OLL is done!")
-    else:
+    if count != 9:
         minus_shape = False
         if (cube1.cp[24] in yellow_side and cube1.cp[26] in yellow_side)\
                 ^(cube1.cp[25] in yellow_side and cube1.cp[27] in yellow_side):
@@ -462,8 +443,6 @@ def solveCFOPOLL(scr):
                         cube1.cp = sp
                 if breakvariable:
                     break
-
-
     OLLsolution = [elem for elem in OLLsolution if elem != ""]
     return OLLsolution
 
@@ -502,12 +481,6 @@ def solveCFOPPLL(scr):
                         cube1.cp = sp
                 if breakvariable:
                     break
-
-
-
-
-
-
     PLLsolution = [elem for elem in PLLsolution if elem != ""]
     return PLLsolution
 
@@ -515,12 +488,17 @@ def solveCFOPPLL(scr):
 def solveCFOP(scr, print_solution = False):
     CFOPsolution = []
     if print_solution:
-        cube1.reset().doalg(scr).virtualcube().reset()
+        cube1.reset().doalg(scr + CFOPsolution).virtualcube().reset()
     CFOPsolution += [" | "] + solveCFOPcross(scr)
+    if print_solution:
+        cube1.reset().doalg(scr + CFOPsolution).virtualcube().reset()
     CFOPsolution += [" | "] + solveCFOPF2L(scr + CFOPsolution)
+    if print_solution:
+        cube1.reset().doalg(scr + CFOPsolution).virtualcube().reset()
     CFOPsolution += [" | "] + solveCFOPOLL(scr + CFOPsolution)
+    if print_solution:
+        cube1.reset().doalg(scr + CFOPsolution).virtualcube().reset()
     CFOPsolution += [" | "] + solveCFOPPLL(scr + CFOPsolution)
-
     if print_solution:
         cube1.virtualcube()
         print("\033[0m" + "-" * 143)
@@ -533,22 +511,7 @@ def solveCFOP(scr, print_solution = False):
     return data
 
 
-"""#with open("solves_data/scrambles_list.txt", "w") as file:
-    for i in range(10000):
-        file.write(str(scramble(30))+"\n")"""
-
-solveCFOP(scramble(20), True)
 
 
-"""#with open("solves_data/scrambles_list.txt", "r") as file:
-    lines = file.readlines()
 
-all_scrambles = []
-for line in lines:
-    all_scrambles.append(eval(line.strip()))
-
-
-with open("solves_data/CFOP_solutions.txt", "w") as file:
-    for scr in all_scrambles:
-        file.write((str(solveCFOP(scr, False)))+"\n")
-"""
+solveCFOP(scramble(30), True)
