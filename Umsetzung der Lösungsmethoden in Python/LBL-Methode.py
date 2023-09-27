@@ -559,5 +559,19 @@ def solveLBL(scr, print_solution = False):
 
 
 
+solveLBL(scramble(30), True) # Eine zuffällige Konfiguration wird gelöst
 
-solveLBL(scramble(30), True)
+
+
+# Die 10000 zuvor bestimmten zufälligen Konfigurationen werden gelöst
+with open("scrambles_list.txt", "r") as file:
+    lines = file.readlines()
+
+all_scrambles = []
+for line in lines:
+    all_scrambles.append(eval(line.strip()))
+
+
+with open("CFCE_solutions.txt", "w") as file:
+    for scr in all_scrambles:
+        file.write((str(solveLBL(scr, False)))+"\n")
